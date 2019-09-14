@@ -1,0 +1,16 @@
+.idea/
+lambda/ask*
+lambda/bin
+lambda/cert*
+lambda/char*
+lambda/date*
+lambda/idna*
+lambda/pyth*
+lambda/req*
+lambda/six*
+lambda/url*
+lambda/lambda.zip
+_code.py
+config.py_secret
+.last_deploy
+home-automation.iml

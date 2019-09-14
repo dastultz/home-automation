@@ -1,0 +1,8 @@
+refer to parent directory for project license
+in this module the following files originated in the project micropython-lib
+original author is Paul Sokolovsky
+https://github.com/micropython/micropython-lib
+
+    socket.py
+    simple.py
+    robust.py
