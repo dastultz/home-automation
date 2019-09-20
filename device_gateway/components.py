@@ -1,6 +1,7 @@
 import digitalio
 import time
 import logger
+import gc
 
 
 class DigitalInSource:
@@ -179,7 +180,8 @@ class Heartbeat:
             self._last_report_time = now
 
     def report_state(self):
-        self.message_bus.publish(self.id, self._last_report_time)
+        msg = "%d\t%d" % (time.monotonic(), gc.mem_free())
+        self.message_bus.publish(self.id, msg)
 
 
 class LogManager:
