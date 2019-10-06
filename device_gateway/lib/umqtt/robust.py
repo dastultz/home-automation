@@ -1,15 +1,16 @@
 import time
+
+import network_manager
 from . import simple
 import logger
 
 
 class MQTTClient(simple.MQTTClient):
 
-    DELAY = 2
     DEBUG = True
 
     def delay(self, i):
-        time.sleep(self.DELAY)
+        time.sleep(i)
 
     def log(self, in_reconnect, e):
         if self.DEBUG:
@@ -19,6 +20,7 @@ class MQTTClient(simple.MQTTClient):
                 logger.log("E4 %r" % e)
 
     def reconnect(self):
+        network_manager.reconnect()
         i = 0
         while 1:
             try:

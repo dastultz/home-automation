@@ -1,11 +1,9 @@
-import sys
 import time
 
 from umqtt.robust import MQTTClient
-from config import config
 
-import network_startup
 import logger
+from config import config
 
 
 class MessageBus:
@@ -25,7 +23,8 @@ class MessageBus:
             try:
                 self._client.connect()
                 connected = True
-            except Exception as e:
+            except Exception as exc:
+                logger.log("E9 %r" % exc)
                 time.sleep(0.5)
 
     # The callback for when MQTT client has connected
@@ -33,8 +32,6 @@ class MessageBus:
         self._client.subscribe("to/{}/#".format(self._device_id))
 
     def publish(self, component_id, payload):
-        if not network_startup.wifi.isconnected():
-            logger.log("E5")
         payload = str(payload)
         self._client.publish("from/{}/{}".format(self._device_id, component_id), payload)
 
@@ -54,8 +51,7 @@ class MessageBus:
             self._on_message_handler(component_id, payload)
 
         except Exception as exc:
-            print(sys.print_exception(exc))
-            #client.publish("from/{}/ERROR".format(gateway_settings.device_id), str(exc))
+            logger.log("E8 %s" %exc)
 
     @staticmethod
     def _coerce_payload(payload: str):

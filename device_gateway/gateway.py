@@ -1,6 +1,6 @@
 import time
 
-import network_startup
+import network_manager
 from components import Heartbeat, LogManager
 from message_bus import MessageBus
 import logger
@@ -21,22 +21,21 @@ class Gateway:
     def run(self):
         self.add_component(Heartbeat())
         self.add_component(LogManager())
-        network_startup.connect()
+        network_manager.connect()
         self._message_bus.connect()
 
         # report status of all components
         self._report_all()
 
         print("A1")
-        try:
-            while True:
+        while True:
+            try:
                 self._message_bus.service()
                 for component in self._components:
                     component.service()
                     time.sleep(0.01)
-        except Exception as exc:
-            logger.log("E6 %s" % exc)
-            # todo: reboot? https://circuitpython.readthedocs.io/en/latest/shared-bindings/supervisor/__init__.html#supervisor.reload
+            except Exception as exc:
+                logger.log("E6 %s" % exc)
 
     def _on_message(self, component_id, payload):
         report_all = component_id == "*"  # report only, maybe should be ../$SYS/report-all
